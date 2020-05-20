@@ -1,0 +1,17 @@
+{
+  "name": "expoAnimation",
+  "displayName": "expoAnimation",
+  "expo": {
+    "name": "expoAnimation",
+    "slug": "expoAnimation",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
