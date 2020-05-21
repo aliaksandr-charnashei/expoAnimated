@@ -66,6 +66,7 @@ export default class MainSquare extends Component {
   render() {
     return (
       <PanGestureHandler
+        minDeltaY={5}
         onGestureEvent={this._onGestureEventY}
         onHandlerStateChange={this._onHandlerStateChangeY}
       >
