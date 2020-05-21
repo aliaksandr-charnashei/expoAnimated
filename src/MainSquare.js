@@ -4,7 +4,7 @@ import { PanGestureHandler, State } from "react-native-gesture-handler";
 
 const { height } = Dimensions.get("window");
 
-export default class ListItem extends Component {
+export default class MainSquare extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -44,6 +44,7 @@ export default class ListItem extends Component {
           this.props.setIsInSwipeMode(false);
         });
       } else {
+        this.props.onDeleteSquare(this.props.index);
       }
     }
   };
@@ -71,6 +72,7 @@ export default class ListItem extends Component {
         <Animated.View
           style={[
             styles.mainSquare,
+            { backgroundColor: colorScheme[this.props.item] },
             {
               transform: [
                 { translateY: this._translateY },
@@ -102,6 +104,12 @@ const styles = StyleSheet.create({
     height: 200,
     margin: 10,
     alignSelf: "center",
-    backgroundColor: "yellow",
   },
 });
+
+const colorScheme = {
+  1: "yellow",
+  2: "blue",
+  3: "green",
+  4: "red",
+};

@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
-import ListItem from "./src/ListItem";
+import MainSquare from "./src/MainSquare";
 
 export default class DraggableBox extends Component {
   constructor(props) {
@@ -18,6 +18,7 @@ export default class DraggableBox extends Component {
       isCollided: false,
       isInSwipeMode: false,
       isInCollisionMode: false,
+      data: [1, 2, 3, 4],
     };
     this._translateY = new Animated.Value(0);
     this._animatedDelete = new Animated.Value(1);
@@ -32,20 +33,32 @@ export default class DraggableBox extends Component {
     this.setState({ isInCollisionMode });
   };
 
+  onDeleteSquare = (index) => {
+    this.setState({
+      data: [
+        ...this.state.data.slice(0, index),
+        ...this.state.data.slice(index + 1),
+      ],
+    });
+  };
+
   render() {
     return (
       <View style={styles.container}>
         <FlatList
           style={styles.flatList}
           horizontal
-          data={[1, 2, 3, 4]}
+          data={this.state.data}
           keyExtractor={(item) => item.toString()}
-          renderItem={({ item }) => (
-            <ListItem
+          renderItem={({ item, index }) => (
+            <MainSquare
               setIsInSwipeMode={this.setIsInSwipeMode}
               setIsInCollisionMode={this.setIsInCollisionMode}
               isLast={item === 4}
+              index={index}
+              item={item}
               isInCollisionMode={this.state.isInCollisionMode}
+              onDeleteSquare={this.onDeleteSquare}
             />
           )}
         />
