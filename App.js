@@ -1,99 +1,67 @@
-import React, { Component } from "react";
-import {
-  Animated,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
+import React, { useCallback } from "react";
+import { Animated, StyleSheet, View, TouchableOpacity } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
 import MainSquare from "./src/MainSquare";
+import SmallSquare from "./src/SmallSquare";
+import { useState } from "react";
 
-export default class DraggableBox extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isInDeleteState: false,
-      isCollided: false,
-      isInSwipeMode: false,
-      isInCollisionMode: false,
-      data: [1, 2, 3, 4],
-    };
-    this._translateY = new Animated.Value(0);
-    this._animatedDelete = new Animated.Value(1);
-    this._lastOffset = { y: 0 };
-  }
+export default ({}) => {
+  const [data, setData] = useState([1, 2, 3, 4]);
+  const [isInCollisionMode, setIsInCollisionMode] = useState(false);
+  const [isInSwipeMode, setIsInSwipeMode] = useState(false);
 
-  setIsInSwipeMode = (isInSwipeMode) => {
-    this.setState({ isInSwipeMode });
-  };
+  const onDeleteSquare = useCallback((index) => {
+    setData((data) => [...data.slice(0, index), ...data.slice(index + 1)]);
+  }, []);
 
-  setIsInCollisionMode = (isInCollisionMode) => {
-    this.setState({ isInCollisionMode });
-  };
-
-  onDeleteSquare = (index) => {
-    this.setState({
-      data: [
-        ...this.state.data.slice(0, index),
-        ...this.state.data.slice(index + 1),
-      ],
-    });
-  };
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <FlatList
-          style={styles.flatList}
-          horizontal
-          data={this.state.data}
-          keyExtractor={(item) => item.toString()}
-          renderItem={({ item, index }) => (
-            <MainSquare
-              setIsInSwipeMode={this.setIsInSwipeMode}
-              setIsInCollisionMode={this.setIsInCollisionMode}
-              isLast={item === 4}
-              index={index}
-              item={item}
-              isInCollisionMode={this.state.isInCollisionMode}
-              onDeleteSquare={this.onDeleteSquare}
-            />
-          )}
-        />
-        <Animated.View
-          style={[
-            styles.smallSquare,
-            styles.top,
-            { opacity: this.state.isInSwipeMode ? 1 : 0 },
-            this.state.isInCollisionMode && {
-              transform: [{ scale: 1.2 }],
-            },
-          ]}
-        />
-        <Animated.View
-          style={[
-            styles.smallSquare,
-            styles.bottom,
-            { opacity: this.state.isInSwipeMode ? 1 : 0 },
-            this.state.isInCollisionMode && {
-              transform: [{ scale: 1.2 }],
-            },
-          ]}
-        />
-        <Animated.View
-          style={[
-            styles.bottomContainer,
-            { opacity: !this.state.isInSwipeMode ? 1 : 0 },
-          ]}
-        >
-          <TouchableOpacity onPress={this.onDelete} style={styles.button} />
-        </Animated.View>
-      </View>
-    );
-  }
-}
+  return (
+    <View style={styles.container}>
+      <FlatList
+        style={styles.flatList}
+        horizontal
+        data={data}
+        keyExtractor={(item) => item.toString()}
+        renderItem={({ item, index }) => (
+          <MainSquare
+            setIsInSwipeMode={setIsInSwipeMode}
+            setIsInCollisionMode={setIsInCollisionMode}
+            isLast={item === 4}
+            index={index}
+            item={item}
+            isInCollisionMode={isInCollisionMode}
+            onDeleteSquare={onDeleteSquare}
+          />
+        )}
+      />
+      <Animated.View
+        style={[
+          styles.smallSquare,
+          styles.top,
+          { opacity: isInSwipeMode ? 1 : 0 },
+          isInCollisionMode && {
+            transform: [{ scale: 1.2 }],
+          },
+        ]}
+      />
+      <SmallSquare
+        style={styles.top}
+        isInSwipeMode={isInSwipeMode}
+        isInCollisionMode={isInCollisionMode}
+      />
+      <SmallSquare
+        style={styles.bottom}
+        isInSwipeMode={isInSwipeMode}
+        isInCollisionMode={isInCollisionMode}
+      />
+      <Animated.View
+        style={[styles.bottomContainer, { opacity: !isInSwipeMode ? 1 : 0 }]}
+      >
+        <TouchableOpacity style={styles.button} />
+      </Animated.View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -103,13 +71,6 @@ const styles = StyleSheet.create({
   flatList: {
     flex: 1,
     paddingLeft: 75,
-  },
-  smallSquare: {
-    position: "absolute",
-    width: 50,
-    height: 50,
-    alignSelf: "center",
-    backgroundColor: "deepskyblue",
   },
   top: {
     top: 20,
