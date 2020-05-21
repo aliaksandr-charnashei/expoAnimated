@@ -66,7 +66,7 @@ export default class DraggableBox extends Component {
           style={[
             styles.smallSquare,
             styles.top,
-            { opacity: this.state.isInSwipeMode },
+            { opacity: this.state.isInSwipeMode ? 1 : 0 },
             this.state.isInCollisionMode && {
               transform: [{ scale: 1.2 }],
             },
@@ -76,7 +76,7 @@ export default class DraggableBox extends Component {
           style={[
             styles.smallSquare,
             styles.bottom,
-            { opacity: this.state.isInSwipeMode },
+            { opacity: this.state.isInSwipeMode ? 1 : 0 },
             this.state.isInCollisionMode && {
               transform: [{ scale: 1.2 }],
             },
@@ -85,7 +85,7 @@ export default class DraggableBox extends Component {
         <Animated.View
           style={[
             styles.bottomContainer,
-            { opacity: !this.state.isInSwipeMode },
+            { opacity: !this.state.isInSwipeMode ? 1 : 0 },
           ]}
         >
           <TouchableOpacity onPress={this.onDelete} style={styles.button} />
