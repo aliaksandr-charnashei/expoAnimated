@@ -34,16 +34,6 @@ export default ({}) => {
           />
         )}
       />
-      <Animated.View
-        style={[
-          styles.smallSquare,
-          styles.top,
-          { opacity: isInSwipeMode ? 1 : 0 },
-          isInCollisionMode && {
-            transform: [{ scale: 1.2 }],
-          },
-        ]}
-      />
       <SmallSquare
         style={styles.top}
         isInSwipeMode={isInSwipeMode}

@@ -19,14 +19,19 @@ export default ({
   const animatedDelete = useRef(new Animated.Value(1)).current;
   let lastOffsetY = useRef(0).current;
 
-  const onGestureEventY = useCallback(({ nativeEvent }) => {
-    translateY.setValue(nativeEvent.translationY);
-    setIsInSwipeMode(Math.abs(nativeEvent.translationY) > 100);
-    setIsInCollisionMode(
-      Math.abs(nativeEvent.translationY) >= height / 2 - 170
-    );
-    setIsCollided(Math.abs(nativeEvent.translationY) >= height / 2 - 170);
-  }, []);
+  const onGestureEventY = Animated.event(
+    [{ nativeEvent: { translationY: translateY } }],
+    {
+      useNativeDriver: true,
+      listener: ({ nativeEvent }) => {
+        setIsInSwipeMode(Math.abs(nativeEvent.translationY) > 100);
+        setIsInCollisionMode(
+          Math.abs(nativeEvent.translationY) >= height / 2 - 170
+        );
+        setIsCollided(Math.abs(nativeEvent.translationY) >= height / 2 - 170);
+      },
+    }
+  );
 
   const onHandlerStateChangeY = useCallback(
     (event) => {
