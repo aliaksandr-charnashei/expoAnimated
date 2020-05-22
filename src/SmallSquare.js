@@ -1,5 +1,6 @@
 import React from "react";
 import { Animated, StyleSheet } from "react-native";
+import { smallSquareHeight } from "./constants";
 
 export default ({ isInSwipeMode, style, isInCollisionMode }) => {
   return (
@@ -19,8 +20,8 @@ export default ({ isInSwipeMode, style, isInCollisionMode }) => {
 const styles = StyleSheet.create({
   smallSquare: {
     position: "absolute",
-    width: 50,
-    height: 50,
+    width: smallSquareHeight,
+    height: smallSquareHeight,
     alignSelf: "center",
     backgroundColor: "deepskyblue",
   },

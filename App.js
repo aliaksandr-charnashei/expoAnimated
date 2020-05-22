@@ -1,36 +1,57 @@
-import React, { useCallback } from "react";
-import { Animated, StyleSheet, View, TouchableOpacity } from "react-native";
+import React, { useCallback, useState } from "react";
+import {
+  Animated,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
 import MainSquare from "./src/MainSquare";
 import SmallSquare from "./src/SmallSquare";
-import { useState } from "react";
+import { smallSquareIndent } from "./src/constants";
+
+const { width } = Dimensions.get("window");
 
 export default ({}) => {
   const [data, setData] = useState([1, 2, 3, 4]);
   const [isInCollisionMode, setIsInCollisionMode] = useState(false);
   const [isInSwipeMode, setIsInSwipeMode] = useState(false);
+  const [currentPictureIndex, setCurrentPictureIndex] = useState(0);
+  const [isInDeleState, setIsInDeleState] = useState(false);
 
-  const onDeleteSquare = useCallback((index) => {
-    setData((data) => [...data.slice(0, index), ...data.slice(index + 1)]);
+  const onHorizontalSwipe = useCallback(({ nativeEvent }) => {
+    setCurrentPictureIndex(nativeEvent.targetContentOffset.x / width);
+  }, []);
+
+  const onDeleteSquare = useCallback(() => {
+    setIsInDeleState(false);
+    setData((data) => data.map(() => Math.random() * 10));
+  }, []);
+
+  const onDeleteButtonPress = useCallback(() => {
+    setIsInDeleState(true);
   }, []);
 
   return (
     <View style={styles.container}>
       <FlatList
-        style={styles.flatList}
         horizontal
         data={data}
         keyExtractor={(item) => item.toString()}
-        renderItem={({ item, index }) => (
+        snapToAlignment={"center"}
+        snapToInterval={width}
+        decelerationRate={"fast"}
+        pagingEnabled
+        onScrollEndDrag={onHorizontalSwipe}
+        renderItem={({ index }) => (
           <MainSquare
             setIsInSwipeMode={setIsInSwipeMode}
             setIsInCollisionMode={setIsInCollisionMode}
-            isLast={item === 4}
-            index={index}
-            item={item}
             isInCollisionMode={isInCollisionMode}
             onDeleteSquare={onDeleteSquare}
+            isDeleted={index === currentPictureIndex && isInDeleState}
           />
         )}
       />
@@ -47,7 +68,7 @@ export default ({}) => {
       <Animated.View
         style={[styles.bottomContainer, { opacity: !isInSwipeMode ? 1 : 0 }]}
       >
-        <TouchableOpacity style={styles.button} />
+        <TouchableOpacity style={styles.button} onPress={onDeleteButtonPress} />
       </Animated.View>
     </View>
   );
@@ -56,17 +77,12 @@ export default ({}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-  },
-  flatList: {
-    flex: 1,
-    paddingLeft: 75,
   },
   top: {
-    top: 20,
+    top: smallSquareIndent,
   },
   bottom: {
-    bottom: 20,
+    bottom: smallSquareIndent,
   },
   bottomContainer: {
     position: "absolute",
