@@ -24,7 +24,6 @@ export default ({
   let lastOffsetY = useRef(0).current;
 
   useEffect(() => {
-    console.warn(isDeleted);
     if (isDeleted) {
       Animated.timing(deleteAnimation, {
         duration: 500,

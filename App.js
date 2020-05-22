@@ -18,12 +18,7 @@ export default ({}) => {
   const [data, setData] = useState([1, 2, 3, 4]);
   const [isInCollisionMode, setIsInCollisionMode] = useState(false);
   const [isInSwipeMode, setIsInSwipeMode] = useState(false);
-  const [currentPictureIndex, setCurrentPictureIndex] = useState(0);
   const [isInDeleState, setIsInDeleState] = useState(false);
-
-  const onHorizontalSwipe = useCallback(({ nativeEvent }) => {
-    setCurrentPictureIndex(nativeEvent.targetContentOffset.x / width);
-  }, []);
 
   const onDeleteSquare = useCallback(() => {
     setIsInDeleState(false);
@@ -44,14 +39,13 @@ export default ({}) => {
         snapToInterval={width}
         decelerationRate={"fast"}
         pagingEnabled
-        onScrollEndDrag={onHorizontalSwipe}
-        renderItem={({ index }) => (
+        renderItem={({}) => (
           <MainSquare
             setIsInSwipeMode={setIsInSwipeMode}
             setIsInCollisionMode={setIsInCollisionMode}
             isInCollisionMode={isInCollisionMode}
             onDeleteSquare={onDeleteSquare}
-            isDeleted={index === currentPictureIndex && isInDeleState}
+            isDeleted={isInDeleState}
           />
         )}
       />
