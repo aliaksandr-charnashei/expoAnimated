@@ -1,5 +1,6 @@
 import React from "react";
-import { Animated, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
+import Animated from "react-native-reanimated";
 import { smallSquareHeight } from "./constants";
 
 export default ({ isInSwipeMode, style, isInCollisionMode }) => {
@@ -8,8 +9,8 @@ export default ({ isInSwipeMode, style, isInCollisionMode }) => {
       style={[
         styles.smallSquare,
         { opacity: isInSwipeMode ? 1 : 0 },
-        isInCollisionMode && {
-          transform: [{ scale: 1.2 }],
+        {
+          transform: [{ scale: isInCollisionMode ? 1.2 : 1 }],
         },
         style,
       ]}
