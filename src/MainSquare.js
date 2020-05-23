@@ -86,32 +86,7 @@ export default ({
     ];
   }, [isDeleted]);
 
-  // const onHandlerStateChangeY = useCallback((event) => {
-  //   if (event.nativeEvent.oldState === State.ACTIVE) {
-  //     lastOffsetY += event.nativeEvent.translationY;
-  //     translateY.setOffset(lastOffsetY);
-  //     translateY.setValue(0);
-  //     if (
-  //       Math.abs(lastOffsetY) <=
-  //       height / 2 -
-  //         (mainSquareHeight / 2 + smallSquareHeight + smallSquareIndent)
-  //     ) {
-  //       Animated.timing(translateY, {
-  //         toValue: translateY.flattenOffset(),
-  //         duration: 500,
-  //         useNativeDriver: true,
-  //       }).start(() => {
-  //         lastOffsetY = 0;
-  //         translateY.setOffset(0);
-  //         translateY.setValue(0);
-  //         setIsInSwipeMode(false);
-  //       });
-  //     } else {
-  //       onDeleteSquare();
-  //       setIsInSwipeMode(false);
-  //     }
-  //   }
-  // }, []);
+  
 
   return (
     <PanGestureHandler
