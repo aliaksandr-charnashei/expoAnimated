@@ -1,11 +1,5 @@
 import React, { useCallback, useState } from "react";
-import {
-  Animated,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
+import { StyleSheet, View, TouchableOpacity, Dimensions } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
 import MainSquare from "./src/MainSquare";
@@ -59,11 +53,11 @@ export default ({}) => {
         isInSwipeMode={isInSwipeMode}
         isInCollisionMode={isInCollisionMode}
       />
-      <Animated.View
+      <View
         style={[styles.bottomContainer, { opacity: !isInSwipeMode ? 1 : 0 }]}
       >
         <TouchableOpacity style={styles.button} onPress={onDeleteButtonPress} />
-      </Animated.View>
+      </View>
     </View>
   );
 };
